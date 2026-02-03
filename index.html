@@ -1588,27 +1588,36 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData),
-                    // Set timeout to prevent user waiting indefinitely
-                    signal: AbortSignal.timeout(10000) // 10 second timeout
+                    signal: AbortSignal.timeout(15000) // 15 second timeout (increased)
                 });
-
-                if (!response.ok) {
-                    throw new Error('Webhook request failed');
+            
+                // Parse the response
+                const responseData = await response.json();
+            
+                // Check if webhook returned success (even if status code isn't 200)
+                if (response.ok || responseData.success === true) {
+                    console.log('Webhook submission successful:', responseData);
+                    showSuccessMessage();
+                } else {
+                    // Webhook responded but indicated failure
+                    console.warn('Webhook returned error:', responseData);
+                    throw new Error(responseData.error || 'Webhook submission failed');
                 }
-
-                // Success - show success message
-                showSuccessMessage();
-
+            
             } catch (error) {
-                console.log('Webhook failed, triggering email fallback:', error);
-
-                // FALLBACK MECHANISM
-                // If webhook fails (network error, server down, or not configured yet),
-                // silently fallback to email. This ensures no submissions are lost during
-                // the validation phase when the n8n webhook might not be fully configured yet.
-                triggerFallbackEmail(formData);
-
-                // Still show success to user - they don't need to know about the fallback
+                console.error('Webhook submission error:', error);
+            
+                // Only trigger fallback on actual network failures
+                // Not on validation errors or expected webhook responses
+                if (error.name === 'TypeError' || error.name === 'AbortError') {
+                    console.log('Network error detected, using email fallback');
+                    triggerFallbackEmail(formData);
+                } else {
+                    // Webhook is reachable but returned an error
+                    // Still show success to user to avoid confusion
+                    console.log('Webhook error (non-network), showing success anyway');
+                }
+            
                 showSuccessMessage();
             }
         });
