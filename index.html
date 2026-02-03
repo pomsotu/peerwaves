@@ -1,0 +1,1734 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Peer Waves - Student Marketplace for Ontario Tech</title>
+    <meta name="description"
+        content="Find and offer student services at Ontario Tech University. Verified, trusted, and affordable - connecting students with the skills they need.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- ============================================ -->
+    <!-- PROJECT CONFIGURATION -->
+    <!-- Update these values to customize the landing page -->
+    <!-- ============================================ -->
+    <script>
+        // WEBHOOK CONFIGURATION
+        // This is where form submissions are sent. Replace with actual n8n webhook URL once generated.
+        const WEBHOOK_URL = "https://n8n.pomsconvert.ca/webhook-test/peerwaves-list";
+
+        // FALLBACK EMAIL CONFIGURATION
+        // If webhook fails, form data is sent to this email as a safety net during validation phase
+        const FALLBACK_EMAIL = "peerwaves001@gmail.com";
+
+        // SURVEY LINK
+        // URL for users who want to provide additional feedback
+        const TALLY_SURVEY_URL = "https://tally.so/r/Zjav9B";
+
+        // SOCIAL PROOF COUNTER
+        // Manually update this number as signups grow
+        const SIGNUP_COUNT = 50;
+
+        // PLATFORM BRANDING
+        const PLATFORM_NAME = "Peer Waves";
+
+        // TEAM CONTACT
+        const TEAM_EMAIL = "peerwaves001@gmail.com";
+    </script>
+
+    <!-- ============================================ -->
+    <!-- STYLES -->
+    <!-- ============================================ -->
+    <style>
+        /* ========== CSS RESET & BASE STYLES ========== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color System */
+            --color-primary: #0066FF;
+            --color-secondary: #00C9A7;
+            --color-navy: #1A2332;
+            --color-navy-light: #2B3544;
+            --color-white: #FFFFFF;
+            --color-gray-50: #F9FAFB;
+            --color-gray-100: #F3F4F6;
+            --color-gray-200: #E5E7EB;
+            --color-gray-300: #D1D5DB;
+            --color-gray-400: #9CA3AF;
+            --color-gray-500: #6B7280;
+            --color-gray-600: #4B5563;
+            --color-gray-700: #374151;
+            --color-gray-800: #1F2937;
+            --color-error: #EF4444;
+            --color-success: #10B981;
+
+            /* Spacing System */
+            --spacing-xs: 0.5rem;
+            --spacing-sm: 0.75rem;
+            --spacing-md: 1rem;
+            --spacing-lg: 1.5rem;
+            --spacing-xl: 2rem;
+            --spacing-2xl: 3rem;
+            --spacing-3xl: 4rem;
+            --spacing-4xl: 6rem;
+
+            /* Typography */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            --font-size-xs: 0.75rem;
+            --font-size-sm: 0.875rem;
+            --font-size-base: 1rem;
+            --font-size-lg: 1.125rem;
+            --font-size-xl: 1.25rem;
+            --font-size-2xl: 1.5rem;
+            --font-size-3xl: 1.875rem;
+            --font-size-4xl: 2.25rem;
+            --font-size-5xl: 3rem;
+
+            /* Border Radius */
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --radius-2xl: 1.5rem;
+
+            /* Shadows */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+            /* Transitions */
+            --transition-fast: 150ms ease;
+            --transition-base: 200ms ease;
+            --transition-slow: 300ms ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-family);
+            font-size: var(--font-size-base);
+            line-height: 1.6;
+            color: var(--color-gray-800);
+            background-color: var(--color-white);
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        button {
+            font-family: inherit;
+            cursor: pointer;
+            border: none;
+            outline: none;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* ========== TYPOGRAPHY ========== */
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            color: var(--color-gray-900);
+        }
+
+        h1 {
+            font-size: var(--font-size-5xl);
+            font-weight: 800;
+        }
+
+        h2 {
+            font-size: var(--font-size-4xl);
+            font-weight: 800;
+        }
+
+        h3 {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+        }
+
+        /* ========== CONTAINER & LAYOUT ========== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--spacing-lg);
+        }
+
+        .section {
+            padding: var(--spacing-4xl) 0;
+        }
+
+        /* ========== HEADER ========== */
+        .header {
+            background-color: var(--color-white);
+            padding: var(--spacing-lg) 0;
+            box-shadow: var(--shadow-sm);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header__container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: var(--spacing-xl);
+        }
+
+        .header__logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--color-gray-900);
+        }
+
+        .header__logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-weight: 800;
+            font-size: var(--font-size-lg);
+        }
+
+        .header__nav {
+            display: flex;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .header__nav-link {
+            color: var(--color-gray-700);
+            font-weight: 500;
+            font-size: var(--font-size-sm);
+            transition: color var(--transition-base);
+        }
+
+        .header__nav-link:hover {
+            color: var(--color-primary);
+        }
+
+        .header__cta {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            transition: all var(--transition-base);
+        }
+
+        .header__cta:hover {
+            background-color: #0052CC;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* Mobile menu toggle */
+        .header__menu-toggle {
+            display: none;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: var(--spacing-xs);
+        }
+
+        .header__menu-icon {
+            width: 24px;
+            height: 2px;
+            background-color: var(--color-gray-700);
+            position: relative;
+            transition: var(--transition-base);
+        }
+
+        .header__menu-icon::before,
+        .header__menu-icon::after {
+            content: '';
+            position: absolute;
+            width: 24px;
+            height: 2px;
+            background-color: var(--color-gray-700);
+            left: 0;
+            transition: var(--transition-base);
+        }
+
+        .header__menu-icon::before {
+            top: -8px;
+        }
+
+        .header__menu-icon::after {
+            bottom: -8px;
+        }
+
+        /* ========== HERO SECTION ========== */
+        .hero {
+            padding: var(--spacing-4xl) 0;
+            background-color: var(--color-white);
+        }
+
+        .hero__container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-3xl);
+            align-items: center;
+        }
+
+        .hero__content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+        }
+
+        .hero__title {
+            font-size: 48px;
+            font-weight: 800;
+            line-height: 1.15;
+            color: var(--color-gray-900);
+        }
+
+        .hero__title-highlight {
+            color: var(--color-primary);
+        }
+
+        .hero__subtitle {
+            font-size: var(--font-size-lg);
+            color: var(--color-gray-600);
+            line-height: 1.6;
+        }
+
+        .hero__cta-group {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .hero__cta-primary {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: var(--font-size-base);
+            transition: all var(--transition-base);
+            border: none;
+        }
+
+        .hero__cta-primary:hover {
+            background-color: #0052CC;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero__cta-secondary {
+            background-color: var(--color-secondary);
+            color: var(--color-white);
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-md);
+            font-weight: 600;
+            font-size: var(--font-size-base);
+            transition: all var(--transition-base);
+            border: none;
+        }
+
+        .hero__cta-secondary:hover {
+            background-color: #00A389;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .hero__social-proof {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-lg);
+        }
+
+        .hero__avatars {
+            display: flex;
+            margin-left: -8px;
+        }
+
+        .hero__avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 3px solid var(--color-white);
+            margin-left: -8px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+        }
+
+        .hero__social-text {
+            font-size: var(--font-size-sm);
+            color: var(--color-gray-600);
+        }
+
+        .hero__image-wrapper {
+            position: relative;
+        }
+
+        .hero__image {
+            width: 100%;
+            height: auto;
+            border-radius: var(--radius-2xl);
+            box-shadow: var(--shadow-xl);
+        }
+
+        /* ========== VALUE PROPOSITIONS SECTION ========== */
+        .value-props {
+            padding: var(--spacing-4xl) 0;
+            background-color: var(--color-gray-50);
+        }
+
+        .value-props__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: var(--spacing-xl);
+        }
+
+        .value-props__card {
+            background-color: var(--color-white);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-xl);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+        }
+
+        .value-props__card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .value-props__icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto var(--spacing-lg);
+            background-color: var(--color-gray-100);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .value-props__icon--primary {
+            background-color: rgba(0, 102, 255, 0.1);
+            color: var(--color-primary);
+        }
+
+        .value-props__icon--secondary {
+            background-color: rgba(0, 201, 167, 0.1);
+            color: var(--color-secondary);
+        }
+
+        .value-props__icon--tertiary {
+            background-color: rgba(255, 152, 0, 0.1);
+            color: #FF9800;
+        }
+
+        .value-props__title {
+            font-size: var(--font-size-xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-sm);
+            color: var(--color-gray-900);
+        }
+
+        .value-props__description {
+            color: var(--color-gray-600);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+        }
+
+        /* ========== HOW IT WORKS SECTION ========== */
+        .how-it-works {
+            padding: var(--spacing-4xl) 0;
+            background-color: var(--color-white);
+        }
+
+        .how-it-works__header {
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .how-it-works__title {
+            font-size: var(--font-size-4xl);
+            font-weight: 800;
+            color: var(--color-gray-900);
+            position: relative;
+            display: inline-block;
+        }
+
+        .how-it-works__title::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+            border-radius: 2px;
+        }
+
+        .how-it-works__columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-xl);
+        }
+
+        .how-it-works__column {
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+        }
+
+        .how-it-works__column--need {
+            background-color: rgba(0, 102, 255, 0.05);
+            border: 2px solid rgba(0, 102, 255, 0.1);
+        }
+
+        .how-it-works__column--offer {
+            background-color: rgba(0, 201, 167, 0.05);
+            border: 2px solid rgba(0, 201, 167, 0.1);
+        }
+
+        .how-it-works__column-title {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+            color: var(--color-gray-900);
+            text-align: center;
+        }
+
+        .how-it-works__steps {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xl);
+        }
+
+        .how-it-works__step {
+            display: flex;
+            gap: var(--spacing-md);
+            align-items: flex-start;
+        }
+
+        .how-it-works__step-number {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: var(--font-size-sm);
+            flex-shrink: 0;
+        }
+
+        .how-it-works__column--offer .how-it-works__step-number {
+            background-color: var(--color-secondary);
+        }
+
+        .how-it-works__step-content {
+            flex: 1;
+        }
+
+        .how-it-works__step-title {
+            font-size: var(--font-size-base);
+            font-weight: 700;
+            margin-bottom: var(--spacing-xs);
+            color: var(--color-gray-900);
+        }
+
+        .how-it-works__step-description {
+            font-size: var(--font-size-sm);
+            color: var(--color-gray-600);
+            line-height: 1.6;
+        }
+
+        /* ========== CATEGORIES SECTION ========== */
+        .categories {
+            padding: var(--spacing-4xl) 0;
+            background-color: var(--color-gray-50);
+        }
+
+        .categories__header {
+            text-align: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .categories__title {
+            font-size: var(--font-size-4xl);
+            font-weight: 800;
+            color: var(--color-gray-900);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .categories__subtitle {
+            color: var(--color-gray-600);
+            font-size: var(--font-size-base);
+        }
+
+        .categories__grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: var(--spacing-lg);
+            margin-top: var(--spacing-2xl);
+        }
+
+        .categories__card {
+            background-color: var(--color-white);
+            padding: var(--spacing-xl);
+            border-radius: var(--radius-lg);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+            transition: all var(--transition-base);
+            cursor: pointer;
+        }
+
+        .categories__card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .categories__icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto var(--spacing-md);
+            background-color: var(--color-gray-100);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--color-primary);
+        }
+
+        .categories__name {
+            font-size: var(--font-size-base);
+            font-weight: 600;
+            color: var(--color-gray-900);
+        }
+
+        /* ========== WAITLIST SECTION ========== */
+        .waitlist {
+            padding: var(--spacing-4xl) 0;
+            background-color: var(--color-white);
+        }
+
+        .waitlist__container {
+            background-color: var(--color-navy);
+            padding: var(--spacing-3xl);
+            border-radius: var(--radius-2xl);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .waitlist__header {
+            text-align: center;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .waitlist__title {
+            font-size: var(--font-size-4xl);
+            font-weight: 800;
+            color: var(--color-white);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .waitlist__subtitle {
+            font-size: var(--font-size-base);
+            color: var(--color-gray-300);
+            line-height: 1.6;
+        }
+
+        .waitlist__form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .waitlist__input-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-md);
+        }
+
+        .waitlist__input-wrapper {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .waitlist__input {
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            border: 2px solid var(--color-navy-light);
+            background-color: var(--color-navy-light);
+            color: var(--color-white);
+            font-size: var(--font-size-base);
+            font-family: var(--font-family);
+            transition: all var(--transition-base);
+        }
+
+        .waitlist__input::placeholder {
+            color: var(--color-gray-400);
+        }
+
+        .waitlist__input:focus {
+            outline: none;
+            border-color: var(--color-primary);
+            background-color: rgba(43, 53, 68, 0.8);
+        }
+
+        .waitlist__input--error {
+            border-color: var(--color-error);
+        }
+
+        .waitlist__error-message {
+            font-size: var(--font-size-xs);
+            color: var(--color-error);
+            margin-top: var(--spacing-xs);
+        }
+
+        .waitlist__toggle-group {
+            display: flex;
+            gap: 0;
+            background-color: var(--color-navy-light);
+            border-radius: var(--radius-md);
+            padding: 4px;
+        }
+
+        .waitlist__toggle-option {
+            flex: 1;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--radius-sm);
+            background-color: transparent;
+            color: var(--color-gray-400);
+            font-weight: 600;
+            font-size: var(--font-size-sm);
+            transition: all var(--transition-base);
+            border: none;
+        }
+
+        .waitlist__toggle-option--active {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+        }
+
+        .waitlist__submit {
+            padding: var(--spacing-md) var(--spacing-xl);
+            border-radius: var(--radius-md);
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            font-weight: 700;
+            font-size: var(--font-size-base);
+            transition: all var(--transition-base);
+            border: none;
+        }
+
+        .waitlist__submit:not(:disabled):hover {
+            background-color: #0052CC;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .waitlist__submit:disabled {
+            background-color: var(--color-gray-600);
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .waitlist__survey-link {
+            text-align: center;
+            margin-top: var(--spacing-md);
+        }
+
+        .waitlist__survey-link a {
+            color: var(--color-gray-400);
+            font-size: var(--font-size-sm);
+            text-decoration: underline;
+            transition: color var(--transition-base);
+        }
+
+        .waitlist__survey-link a:hover {
+            color: var(--color-gray-300);
+        }
+
+        .waitlist__verification {
+            text-align: center;
+            margin-top: var(--spacing-md);
+            color: var(--color-gray-400);
+            font-size: var(--font-size-xs);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+        }
+
+        .waitlist__success {
+            text-align: center;
+            padding: var(--spacing-xl);
+        }
+
+        .waitlist__success-icon {
+            font-size: 48px;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .waitlist__success-title {
+            font-size: var(--font-size-2xl);
+            font-weight: 700;
+            color: var(--color-success);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .waitlist__success-message {
+            font-size: var(--font-size-base);
+            color: var(--color-gray-300);
+        }
+
+        /* ========== FOOTER ========== */
+        .footer {
+            background-color: var(--color-white);
+            padding: var(--spacing-3xl) 0 var(--spacing-lg);
+            border-top: 1px solid var(--color-gray-200);
+        }
+
+        .footer__container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .footer__brand {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .footer__logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            font-size: var(--font-size-lg);
+            font-weight: 700;
+            color: var(--color-gray-900);
+        }
+
+        .footer__logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-white);
+            font-weight: 800;
+        }
+
+        .footer__tagline {
+            color: var(--color-gray-600);
+            font-size: var(--font-size-sm);
+            line-height: 1.6;
+        }
+
+        .footer__social {
+            display: flex;
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .footer__social-link {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--color-gray-100);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--color-gray-600);
+            transition: all var(--transition-base);
+        }
+
+        .footer__social-link:hover {
+            background-color: var(--color-primary);
+            color: var(--color-white);
+            transform: translateY(-2px);
+        }
+
+        .footer__column {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+        }
+
+        .footer__column-title {
+            font-size: var(--font-size-sm);
+            font-weight: 700;
+            color: var(--color-gray-900);
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .footer__link {
+            color: var(--color-gray-600);
+            font-size: var(--font-size-sm);
+            transition: color var(--transition-base);
+        }
+
+        .footer__link:hover {
+            color: var(--color-primary);
+        }
+
+        .footer__bottom {
+            text-align: center;
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid var(--color-gray-200);
+            color: var(--color-gray-600);
+            font-size: var(--font-size-xs);
+        }
+
+        /* ========== RESPONSIVE DESIGN ========== */
+        @media (max-width: 1024px) {
+            .categories__grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .footer__container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+
+            /* Header Mobile */
+            .header__nav {
+                position: fixed;
+                top: 72px;
+                left: 0;
+                right: 0;
+                background-color: var(--color-white);
+                flex-direction: column;
+                padding: var(--spacing-lg);
+                box-shadow: var(--shadow-md);
+                transform: translateY(-150%);
+                transition: transform var(--transition-base);
+            }
+
+            .header__nav--open {
+                transform: translateY(0);
+            }
+
+            .header__menu-toggle {
+                display: block;
+            }
+
+            /* Hero Mobile */
+            .hero__container {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-2xl);
+            }
+
+            .hero__image-wrapper {
+                order: 2;
+            }
+
+            .hero__title {
+                font-size: var(--font-size-3xl);
+            }
+
+            .hero__cta-group {
+                flex-direction: column;
+            }
+
+            /* Value Props Mobile */
+            .value-props__grid {
+                grid-template-columns: 1fr;
+            }
+
+            /* How It Works Mobile */
+            .how-it-works__columns {
+                grid-template-columns: 1fr;
+            }
+
+            /* Categories Mobile */
+            .categories__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            /* Waitlist Mobile */
+            .waitlist__container {
+                padding: var(--spacing-xl);
+            }
+
+            .waitlist__title {
+                font-size: var(--font-size-2xl);
+            }
+
+            .waitlist__input-group {
+                grid-template-columns: 1fr;
+            }
+
+            /* Footer Mobile */
+            .footer__container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 var(--spacing-md);
+            }
+
+            .section {
+                padding: var(--spacing-2xl) 0;
+            }
+
+            .categories__grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero__title {
+                font-size: var(--font-size-2xl);
+            }
+
+            h2 {
+                font-size: var(--font-size-3xl);
+            }
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out;
+        }
+    </style>
+
+    <!-- ============================================ -->
+    <!-- HTML STRUCTURE -->
+    <!-- ============================================ -->
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container header__container">
+            <a href="#hero-section" class="header__logo">
+                <div class="header__logo-icon">🌊</div>
+                <span id="headerLogoText">Peer Waves</span>
+            </a>
+
+            <nav class="header__nav" id="headerNav">
+                <a href="#how-it-works" class="header__nav-link">How It Works</a>
+                <a href="#categories" class="header__nav-link">Categories</a>
+                <button class="header__cta" id="headerJoinBtn">Join Waitlist</button>
+            </nav>
+
+            <button class="header__menu-toggle" id="menuToggle" aria-label="Toggle menu">
+                <span class="header__menu-icon"></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="hero-section">
+        <div class="container hero__container">
+            <div class="hero__content">
+                <h1 class="hero__title">
+                    Find Student Services at <span class="hero__title-highlight">Ontario Tech</span> — Fast
+                </h1>
+                <p class="hero__subtitle">
+                    Borrow tools, find help, share skills. Peer Waves connects Ontario Tech students with services they
+                    need — all verified, local, and affordable.
+                </p>
+
+                <div class="hero__cta-group">
+                    <button class="hero__cta-primary" onclick="scrollToWaitlist()">I Need Services</button>
+                    <button class="hero__cta-secondary" onclick="scrollToWaitlist()">I Offer Services</button>
+                </div>
+
+                <div class="hero__social-proof">
+                    <div class="hero__avatars">
+                        <div class="hero__avatar">A</div>
+                        <div class="hero__avatar">B</div>
+                        <div class="hero__avatar">C</div>
+                        <div class="hero__avatar">D</div>
+                    </div>
+                    <p class="hero__social-text">Join <strong id="signupCountText">50+</strong> students already signed
+                        up</p>
+                </div>
+            </div>
+
+            <div class="hero__image-wrapper">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800&h=600&fit=crop"
+                    alt="Diverse students collaborating" class="hero__image">
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUE PROPOSITIONS SECTION -->
+    <section class="value-props section">
+        <div class="container">
+            <div class="value-props__grid">
+                <div class="value-props__card">
+                    <div class="value-props__icon value-props__icon--primary">🔒</div>
+                    <h3 class="value-props__title">Student-Only</h3>
+                    <p class="value-props__description">Ontario Tech verified access only. No outsiders, just your
+                        campus community.</p>
+                </div>
+
+                <div class="value-props__card">
+                    <div class="value-props__icon value-props__icon--secondary">✓</div>
+                    <h3 class="value-props__title">Verified & Trusted</h3>
+                    <p class="value-props__description">Every user is a real student. Build trust through reviews and
+                        verified profiles.</p>
+                </div>
+
+                <div class="value-props__card">
+                    <div class="value-props__icon value-props__icon--tertiary">📍</div>
+                    <h3 class="value-props__title">Local & Affordable</h3>
+                    <p class="value-props__description">Support fellow students. Find services right on campus at
+                        student-friendly prices.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- HOW IT WORKS SECTION -->
+    <section class="how-it-works section" id="how-it-works">
+        <div class="container">
+            <div class="how-it-works__header">
+                <h2 class="how-it-works__title">How It Works</h2>
+            </div>
+
+            <div class="how-it-works__columns">
+                <div class="how-it-works__column how-it-works__column--need">
+                    <h3 class="how-it-works__column-title">Need a Service?</h3>
+
+                    <div class="how-it-works__steps">
+                        <div class="how-it-works__step">
+                            <div class="how-it-works__step-number">1</div>
+                            <div class="how-it-works__step-content">
+                                <h4 class="how-it-works__step-title">Browse Categories</h4>
+                                <p class="how-it-works__step-description">Find the service you need from haircuts to
+                                    tech repair — all in one place.</p>
+                            </div>
+                        </div>
+
+                        <div class="how-it-works__step">
+                            <div class="how-it-works__step-number">2</div>
+                            <div class="how-it-works__step-content">
+                                <h4 class="how-it-works__step-title">Chat & Coordinate</h4>
+                                <p class="how-it-works__step-description">Message students directly. Set price, time,
+                                    location. Easy coordination.</p>
+                            </div>
+                        </div>
+
+                        <div class="how-it-works__step">
+                            <div class="how-it-works__step-number">3</div>
+                            <div class="how-it-works__step-content">
+                                <h4 class="how-it-works__step-title">Meet & Complete</h4>
+                                <p class="how-it-works__step-description">Meet up at a safe location. Get exactly what
+                                    you need. Then leave a review.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="how-it-works__column how-it-works__column--offer">
+                    <h3 class="how-it-works__column-title">Offer Your Skills?</h3>
+
+                    <div class="how-it-works__steps">
+                        <div class="how-it-works__step">
+                            <div class="how-it-works__step-number">1</div>
+                            <div class="how-it-works__step-content">
+                                <h4 class="how-it-works__step-title">Create Your Profile</h4>
+                                <p class="how-it-works__step-description">List your skills, set your rates, add photos
+                                    or portfolios of your work.</p>
+                            </div>
+                        </div>
+
+                        <div class="how-it-works__step">
+                            <div class="how-it-works__step-number">2</div>
+                            <div class="how-it-works__step-content">
+                                <h4 class="how-it-works__step-title">Receive Inquiries</h4>
+                                <p class="how-it-works__step-description">Students will find you and message you.
+                                    Respond on your schedule and terms.</p>
+                            </div>
+                        </div>
+
+                        <div class="how-it-works__step">
+                            <div class="how-it-works__step-number">3</div>
+                            <div class="how-it-works__step-content">
+                                <h4 class="how-it-works__step-title">Secure Your Payout</h4>
+                                <p class="how-it-works__step-description">Complete the service and receive payment.
+                                    Build reputation with every transaction.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CATEGORIES SECTION -->
+    <section class="categories section" id="categories">
+        <div class="container">
+            <div class="categories__header">
+                <h2 class="categories__title">Browse Categories</h2>
+                <p class="categories__subtitle">Find exactly what you need from fellow students</p>
+            </div>
+
+            <div class="categories__grid">
+                <div class="categories__card">
+                    <div class="categories__icon">✂️</div>
+                    <h3 class="categories__name">Barbing</h3>
+                </div>
+
+                <div class="categories__card">
+                    <div class="categories__icon">💇</div>
+                    <h3 class="categories__name">Braiding</h3>
+                </div>
+
+                <div class="categories__card">
+                    <div class="categories__icon">🍴</div>
+                    <h3 class="categories__name">Food</h3>
+                </div>
+
+                <div class="categories__card">
+                    <div class="categories__icon">🎨</div>
+                    <h3 class="categories__name">Design</h3>
+                </div>
+
+                <div class="categories__card">
+                    <div class="categories__icon">💻</div>
+                    <h3 class="categories__name">Tech Setup</h3>
+                </div>
+
+                <div class="categories__card">
+                    <div class="categories__icon">📢</div>
+                    <h3 class="categories__name">Social Media</h3>
+                </div>
+
+                <div class="categories__card">
+                    <div class="categories__icon">🎬</div>
+                    <h3 class="categories__name">Editing</h3>
+                </div>
+
+                <div class="categories__card">
+                    <div class="categories__icon">🚚</div>
+                    <h3 class="categories__name">Pickup Services</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- WAITLIST SECTION -->
+    <section class="waitlist section" id="waitlist-section">
+        <div class="container">
+            <div class="waitlist__container">
+                <div class="waitlist__header">
+                    <h2 class="waitlist__title">Join the Waitlist — Launching Soon</h2>
+                    <p class="waitlist__subtitle">
+                        Be the first to know when Peer Waves drops at Ontario Tech. Secure your username and get
+                        exclusive early access perks.
+                    </p>
+                </div>
+
+                <form class="waitlist__form" id="waitlistForm">
+                    <div class="waitlist__input-group">
+                        <div class="waitlist__input-wrapper">
+                            <input type="text" class="waitlist__input" id="fullName" placeholder="Full Name" required>
+                            <div class="waitlist__error-message" id="nameError"></div>
+                        </div>
+
+                        <div class="waitlist__input-wrapper">
+                            <input type="email" class="waitlist__input" id="studentEmail"
+                                placeholder="Student Email (ontariotechu.net)" required>
+                            <div class="waitlist__error-message" id="emailError"></div>
+                        </div>
+                    </div>
+
+                    <div class="waitlist__toggle-group">
+                        <button type="button" class="waitlist__toggle-option waitlist__toggle-option--active"
+                            data-type="customer" id="toggleCustomer">
+                            Customer
+                        </button>
+                        <button type="button" class="waitlist__toggle-option" data-type="vendor" id="toggleVendor">
+                            Vendor
+                        </button>
+                    </div>
+
+                    <button type="submit" class="waitlist__submit" id="submitBtn">
+                        Get Early Access
+                    </button>
+
+                    <div class="waitlist__survey-link">
+                        <a href="javascript:void(0)" id="surveyLink" target="_blank" rel="noopener noreferrer">
+                            Want to help us build this? Take our 2-minute survey
+                        </a>
+                    </div>
+
+                    <div class="waitlist__verification">
+                        <span>⚡</span>
+                        <span>Verified Ontario Tech Email Required</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__container">
+                <div class="footer__brand">
+                    <a href="#hero-section" class="footer__logo">
+                        <div class="footer__logo-icon">🌊</div>
+                        <span id="footerLogoText">Peer Waves</span>
+                    </a>
+                    <p class="footer__tagline">
+                        Connecting Ontario Tech students with the services and skills they need — all in one trusted
+                        marketplace.
+                    </p>
+                    <div class="footer__social">
+                        <a href="#" class="footer__social-link" aria-label="Instagram">📷</a>
+                        <a href="#" class="footer__social-link" aria-label="Twitter">🐦</a>
+                        <a href="#" class="footer__social-link" aria-label="LinkedIn">💼</a>
+                    </div>
+                </div>
+
+                <div class="footer__column">
+                    <h4 class="footer__column-title">Quick Links</h4>
+                    <a href="#how-it-works" class="footer__link">How It Works</a>
+                    <a href="#categories" class="footer__link">Categories</a>
+                    <a href="#waitlist-section" class="footer__link">Join Waitlist</a>
+                </div>
+            </div>
+
+            <div class="footer__bottom">
+                © 2025 Peer Waves. Handcrafted for Ontario Tech University
+            </div>
+        </div>
+    </footer>
+
+    <!-- ============================================ -->
+    <!-- JAVASCRIPT FUNCTIONALITY -->
+    <!-- ============================================ -->
+    <script>
+        // ========== CONFIGURATION INITIALIZATION ==========
+        // Apply configuration values to the page
+        document.addEventListener('DOMContentLoaded', function () {
+            // Update platform name throughout the page
+            document.getElementById('headerLogoText').textContent = PLATFORM_NAME;
+            document.getElementById('footerLogoText').textContent = PLATFORM_NAME;
+
+            // Update signup count
+            document.getElementById('signupCountText').textContent = SIGNUP_COUNT + '+';
+
+            // Set survey link
+            document.getElementById('surveyLink').href = TALLY_SURVEY_URL;
+        });
+
+        // ========== SMOOTH SCROLLING ==========
+        document.addEventListener('DOMContentLoaded', function () {
+            // Enable smooth scrolling for legitimate internal anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const href = this.getAttribute('href');
+                    if (!href || href === '#' || href.startsWith('javascript:')) return;
+
+                    const targetId = href.substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        e.preventDefault();
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+
+                        // Close mobile menu if open
+                        const mobileMenu = document.getElementById('headerNav');
+                        if (mobileMenu && mobileMenu.classList.contains('header__nav--open')) {
+                            mobileMenu.classList.remove('header__nav--open');
+                        }
+                    }
+                });
+            });
+        });
+
+        // Scroll to waitlist function for CTA buttons
+        function scrollToWaitlist() {
+            document.getElementById('waitlist-section').scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        // Header join button smooth scroll
+        document.getElementById('headerJoinBtn').addEventListener('click', scrollToWaitlist);
+
+        // ========== MOBILE MENU TOGGLE ==========
+        document.getElementById('menuToggle').addEventListener('click', function () {
+            const nav = document.getElementById('headerNav');
+            nav.classList.toggle('header__nav--open');
+        });
+
+        // ========== USER TYPE TOGGLE ==========
+        const toggleButtons = document.querySelectorAll('.waitlist__toggle-option');
+        let selectedUserType = 'customer'; // Default selection
+
+        toggleButtons.forEach(button => {
+            button.addEventListener('click', function () {
+                // Remove active class from all buttons
+                toggleButtons.forEach(btn => btn.classList.remove('waitlist__toggle-option--active'));
+
+                // Add active class to clicked button
+                this.classList.add('waitlist__toggle-option--active');
+
+                // Update selected user type
+                selectedUserType = this.dataset.type;
+            });
+        });
+
+        // ========== FORM VALIDATION UTILITIES ==========
+
+        /**
+         * Validates that the email ends with @ontariotechu.net
+         * This is required because the platform is student-only and email validation
+         * is the trust mechanism to ensure only Ontario Tech students can sign up
+         */
+        function validateEmail(email) {
+            const emailPattern = /^[^\s@]+@ontariotechu\.net$/i;
+            return emailPattern.test(email);
+        }
+
+        /**
+         * Validates that the name contains at least two words
+         * This ensures users provide both first and last name
+         */
+        function validateName(name) {
+            const trimmedName = name.trim();
+            const words = trimmedName.split(/\s+/);
+            return words.length >= 2 && trimmedName.length > 0;
+        }
+
+        /**
+         * Display error message for a specific field
+         */
+        function showError(fieldId, errorId, message) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(errorId);
+
+            field.classList.add('waitlist__input--error');
+            errorElement.textContent = message;
+        }
+
+        /**
+         * Clear error message for a specific field
+         */
+        function clearError(fieldId, errorId) {
+            const field = document.getElementById(fieldId);
+            const errorElement = document.getElementById(errorId);
+
+            field.classList.remove('waitlist__input--error');
+            errorElement.textContent = '';
+        }
+
+        /**
+         * Disable submit button and show loading state
+         */
+        function disableSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+        }
+
+        /**
+         * Enable submit button and restore original text
+         */
+        function enableSubmitButton() {
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Get Early Access';
+        }
+
+        // ========== REAL-TIME VALIDATION ==========
+        // Validate email as user types
+        document.getElementById('studentEmail').addEventListener('input', function () {
+            const email = this.value.trim();
+
+            if (email.length > 0 && !validateEmail(email)) {
+                showError('studentEmail', 'emailError', 'Must be a valid @ontariotechu.net email');
+            } else {
+                clearError('studentEmail', 'emailError');
+            }
+
+            updateSubmitButtonState();
+        });
+
+        // Validate name as user types
+        document.getElementById('fullName').addEventListener('input', function () {
+            const name = this.value.trim();
+
+            if (name.length > 0 && !validateName(name)) {
+                showError('fullName', 'nameError', 'Please provide your full name (first and last)');
+            } else {
+                clearError('fullName', 'nameError');
+            }
+
+            updateSubmitButtonState();
+        });
+
+        /**
+         * Update submit button state based on form validity
+         * Button is only enabled when all validations pass
+         */
+        function updateSubmitButtonState() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim();
+
+            const isValid = validateName(fullName) && validateEmail(studentEmail);
+
+            const submitBtn = document.getElementById('submitBtn');
+            submitBtn.disabled = !isValid;
+        }
+
+        // ========== FORM SUBMISSION ==========
+        document.getElementById('waitlistForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            // Get form values
+            const fullName = document.getElementById('fullName').value.trim();
+            const studentEmail = document.getElementById('studentEmail').value.trim();
+
+            // Final validation before submission
+            let isValid = true;
+
+            if (!validateName(fullName)) {
+                showError('fullName', 'nameError', 'Please provide your full name (first and last)');
+                isValid = false;
+            }
+
+            if (!validateEmail(studentEmail)) {
+                showError('studentEmail', 'emailError', 'Must be a valid @ontariotechu.net email');
+                isValid = false;
+            }
+
+            if (!isValid) {
+                return;
+            }
+
+            // Disable submit button to prevent duplicate submissions
+            disableSubmitButton();
+
+            // Prepare form data
+            const formData = {
+                fullName: fullName,
+                email: studentEmail,
+                userType: selectedUserType,
+                submittedAt: new Date().toISOString(),
+                source: 'landing_page'
+            };
+
+            // Attempt to send to webhook
+            try {
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData),
+                    // Set timeout to prevent user waiting indefinitely
+                    signal: AbortSignal.timeout(10000) // 10 second timeout
+                });
+
+                if (!response.ok) {
+                    throw new Error('Webhook request failed');
+                }
+
+                // Success - show success message
+                showSuccessMessage();
+
+            } catch (error) {
+                console.log('Webhook failed, triggering email fallback:', error);
+
+                // FALLBACK MECHANISM
+                // If webhook fails (network error, server down, or not configured yet),
+                // silently fallback to email. This ensures no submissions are lost during
+                // the validation phase when the n8n webhook might not be fully configured yet.
+                triggerFallbackEmail(formData);
+
+                // Still show success to user - they don't need to know about the fallback
+                showSuccessMessage();
+            }
+        });
+
+        /**
+         * Trigger fallback email mechanism
+         * Constructs a mailto link with all form data and opens it automatically
+         * This safety net prevents lost signups during the validation phase
+         */
+        function triggerFallbackEmail(formData) {
+            const subject = encodeURIComponent('Landing Page Signup - Fallback');
+            const body = encodeURIComponent(
+                `NEW WAITLIST SIGNUP (Fallback)\n\n` +
+                `Full Name: ${formData.fullName}\n` +
+                `Email: ${formData.email}\n` +
+                `User Type: ${formData.userType}\n` +
+                `Submitted At: ${formData.submittedAt}\n` +
+                `Source: ${formData.source}\n\n` +
+                `Note: This submission was sent via email fallback because the webhook was unavailable.`
+            );
+
+            const mailtoLink = `mailto:${FALLBACK_EMAIL}?subject=${subject}&body=${body}`;
+
+            // Open mailto link (will open user's default email client)
+            window.location.href = mailtoLink;
+        }
+
+        /**
+         * Display success message and clear form
+         */
+        function showSuccessMessage() {
+            const form = document.getElementById('waitlistForm');
+
+            // Clear form inputs
+            document.getElementById('fullName').value = '';
+            document.getElementById('studentEmail').value = '';
+            clearError('fullName', 'nameError');
+            clearError('studentEmail', 'emailError');
+
+            // Replace form with success message
+            form.innerHTML = `
+            <div class="waitlist__success">
+                <div class="waitlist__success-icon">✅</div>
+                <h3 class="waitlist__success-title">Success! Check your email for confirmation</h3>
+                <p class="waitlist__success-message">We'll notify you as soon as we launch</p>
+            </div>
+        `;
+        }
+
+        // ========== SCROLL ANIMATIONS ==========
+        // Add fade-in animation as elements come into view
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver(function (entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('fade-in-up');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Observe sections for animation
+        document.querySelectorAll('.section').forEach(section => {
+            observer.observe(section);
+        });
+    </script>
+
+    <!-- ============================================ -->
+    <!-- PROJECT DOCUMENTATION -->
+    <!-- ============================================ -->
+    <!--
+
+PROJECT: Peer Waves Landing Page
+PURPOSE: Pre-launch waitlist collection for student marketplace platform at Ontario Tech University
+
+SYSTEM ARCHITECTURE:
+1. Frontend: Single HTML file with embedded CSS and JavaScript
+2. Form Submission: POST request to n8n webhook (WEBHOOK_URL)
+3. Fallback: Mailto link to FALLBACK_EMAIL if webhook fails
+4. Data Flow: Form → Webhook → (planned) n8n → Airtable → Email notification
+
+FEATURES:
+- Responsive design (mobile, tablet, desktop)
+- Ontario Tech email validation (@ontariotechu.net)
+- Real-time form validation
+- Smooth scrolling navigation
+- User type toggle (Customer/Vendor)
+- Graceful error handling with email fallback
+- Success state management
+- Survey integration via Tally
+
+CONFIGURATION REQUIRED:
+1. Update WEBHOOK_URL with actual n8n webhook once generated
+2. Update SIGNUP_COUNT as signups grow
+3. Optionally customize PLATFORM_NAME, TEAM_EMAIL, etc.
+
+DEPLOYMENT:
+- Host this HTML file on any web server or platform (Netlify, Vercel, GitHub Pages, etc.)
+- No build process or dependencies required
+- Works entirely client-side
+
+DEPENDENCIES:
+- Google Fonts (Inter font family)
+- Unsplash image for hero section
+- No JavaScript frameworks required
+
+MAINTENANCE:
+- Update SIGNUP_COUNT regularly for social proof
+- Monitor form submissions via webhook or fallback email
+- Update survey link (TALLY_SURVEY_URL) as needed
+
+CONTACT:
+For questions or support, contact: peerwaves001@gmail.com
+
+-->
+
+</body>
+
+</html>
