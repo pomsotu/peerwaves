@@ -1581,44 +1581,44 @@
             };
 
             // Attempt to send to webhook
+            // Attempt to send to webhook with timeout
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+                
                 const response = await fetch(WEBHOOK_URL, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(formData),
-                    signal: AbortSignal.timeout(15000) // 15 second timeout (increased)
+                    signal: controller.signal
                 });
+                
+                clearTimeout(timeoutId);
             
-                // Parse the response
-                const responseData = await response.json();
-            
-                // Check if webhook returned success (even if status code isn't 200)
-                if (response.ok || responseData.success === true) {
-                    console.log('Webhook submission successful:', responseData);
+                // Check if response is OK (status 200-299)
+                if (response.ok) {
+                    // Try to parse JSON response, but don't fail if it's not JSON
+                    try {
+                        const responseData = await response.json();
+                        console.log('✅ Webhook submission successful:', responseData);
+                    } catch (parseError) {
+                        console.log('✅ Webhook received successfully');
+                    }
                     showSuccessMessage();
                 } else {
-                    // Webhook responded but indicated failure
-                    console.warn('Webhook returned error:', responseData);
-                    throw new Error(responseData.error || 'Webhook submission failed');
+                    // Webhook responded but with error status (4xx, 5xx)
+                    console.error('Webhook error - Status:', response.status);
+                    triggerFallbackEmail(formData);
+                    enableSubmitButton();
                 }
             
             } catch (error) {
-                console.error('Webhook submission error:', error);
-            
-                // Only trigger fallback on actual network failures
-                // Not on validation errors or expected webhook responses
-                if (error.name === 'TypeError' || error.name === 'AbortError') {
-                    console.log('Network error detected, using email fallback');
-                    triggerFallbackEmail(formData);
-                } else {
-                    // Webhook is reachable but returned an error
-                    // Still show success to user to avoid confusion
-                    console.log('Webhook error (non-network), showing success anyway');
-                }
-            
-                showSuccessMessage();
+                // Network error, timeout, or webhook unreachable
+                console.error('Webhook submission failed:', error.message);
+                triggerFallbackEmail(formData);
+                enableSubmitButton();
             }
         });
 
