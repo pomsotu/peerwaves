@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Peer Waves - Student Marketplace for Ontario Tech</title>
+    <title>Peer Waves - Student Marketplace for Ontario Tech & Durham College</title>
     <meta name="description"
-        content="Find and offer student services at Ontario Tech University. Verified, trusted, and affordable - connecting students with the skills they need.">
+        content="Find and offer student services at Ontario Tech University and Durham College. Verified, trusted, and affordable - connecting students with the skills they need.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -1062,7 +1062,7 @@
     <header class="header">
         <div class="container header__container">
             <a href="#hero-section" class="header__logo">
-                <div class="header__logo-icon">🌊</div>
+                <div class="header__logo-icon">PW</div>
                 <span id="headerLogoText">Peer Waves</span>
             </a>
 
@@ -1083,10 +1083,10 @@
         <div class="container hero__container">
             <div class="hero__content">
                 <h1 class="hero__title">
-                    Find Student Services at <span class="hero__title-highlight">Ontario Tech</span> — Fast
+                    Find Student Services at <span class="hero__title-highlight">Ontario Tech & Durham College</span> — Fast
                 </h1>
                 <p class="hero__subtitle">
-                    Borrow tools, find help, share skills. Peer Waves connects Ontario Tech students with services they
+                    Borrow tools, find help, share skills. Peer Waves connects Ontario Tech and Durham College students with services they
                     need — all verified, local, and affordable.
                 </p>
 
@@ -1121,7 +1121,7 @@
                 <div class="value-props__card">
                     <div class="value-props__icon value-props__icon--primary">🔒</div>
                     <h3 class="value-props__title">Student-Only</h3>
-                    <p class="value-props__description">Ontario Tech verified access only. No outsiders, just your
+                    <p class="value-props__description">Ontario Tech & Durham College verified access only. No outsiders, just your
                         campus community.</p>
                 </div>
 
@@ -1278,7 +1278,7 @@
                 <div class="waitlist__header">
                     <h2 class="waitlist__title">Join the Waitlist — Launching Soon</h2>
                     <p class="waitlist__subtitle">
-                        Be the first to know when Peer Waves drops at Ontario Tech. Secure your username and get
+                        Be the first to know when Peer Waves drops at Ontario Tech and Durham College. Secure your username and get
                         exclusive early access perks.
                     </p>
                 </div>
@@ -1292,7 +1292,7 @@
 
                         <div class="waitlist__input-wrapper">
                             <input type="email" class="waitlist__input" id="studentEmail"
-                                placeholder="Student Email (ontariotechu.net)" required>
+                                placeholder="Student Email (ontariotechu.net or durhamcollege.ca)" required>
                             <div class="waitlist__error-message" id="emailError"></div>
                         </div>
                     </div>
@@ -1319,7 +1319,7 @@
 
                     <div class="waitlist__verification">
                         <span>⚡</span>
-                        <span>Verified Ontario Tech Email Required</span>
+                        <span>Verified Student Email Required (Ontario Tech or Durham College)</span>
                     </div>
                 </form>
             </div>
@@ -1332,11 +1332,11 @@
             <div class="footer__container">
                 <div class="footer__brand">
                     <a href="#hero-section" class="footer__logo">
-                        <div class="footer__logo-icon">🌊</div>
+                        <div class="footer__logo-icon">PW</div>
                         <span id="footerLogoText">Peer Waves</span>
                     </a>
                     <p class="footer__tagline">
-                        Connecting Ontario Tech students with the services and skills they need — all in one trusted
+                        Connecting Ontario Tech and Durham College students with the services and skills they need — all in one trusted
                         marketplace.
                     </p>
                     <div class="footer__social">
@@ -1355,7 +1355,7 @@
             </div>
 
             <div class="footer__bottom">
-                © 2025 Peer Waves. Handcrafted for Ontario Tech University
+                © 2025 Peer Waves. Handcrafted for Ontario Tech University & Durham College
             </div>
         </div>
     </footer>
@@ -1443,12 +1443,12 @@
         // ========== FORM VALIDATION UTILITIES ==========
 
         /**
-         * Validates that the email ends with @ontariotechu.net
+         * Validates that the email ends with @ontariotechu.net or @durhamcollege.ca
          * This is required because the platform is student-only and email validation
-         * is the trust mechanism to ensure only Ontario Tech students can sign up
+         * is the trust mechanism to ensure only Ontario Tech and Durham College students can sign up
          */
         function validateEmail(email) {
-            const emailPattern = /^[^\s@]+@ontariotechu\.net$/i;
+            const emailPattern = /^[^\s@]+@(ontariotechu\.net|durhamcollege\.ca)$/i;
             return emailPattern.test(email);
         }
 
@@ -1508,7 +1508,7 @@
             const email = this.value.trim();
 
             if (email.length > 0 && !validateEmail(email)) {
-                showError('studentEmail', 'emailError', 'Must be a valid @ontariotechu.net email');
+                showError('studentEmail', 'emailError', 'Must be a valid @ontariotechu.net or @durhamcollege.ca email');
             } else {
                 clearError('studentEmail', 'emailError');
             }
@@ -1560,7 +1560,7 @@
             }
 
             if (!validateEmail(studentEmail)) {
-                showError('studentEmail', 'emailError', 'Must be a valid @ontariotechu.net email');
+                showError('studentEmail', 'emailError', 'Must be a valid @ontariotechu.net or @durhamcollege.ca email');
                 isValid = false;
             }
 
@@ -1580,7 +1580,6 @@
                 source: 'landing_page'
             };
 
-            // Attempt to send to webhook
             // Attempt to send to webhook with timeout
             try {
                 const controller = new AbortController();
